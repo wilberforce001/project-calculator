@@ -19,11 +19,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
     numbers.forEach((number) => number.addEventListener("click", function(e) {
         handleNumber(e.target.textContent)
+        currentScreen.textContent = currentValue;
 
     }))
+
+    operators.forEach((op) => op.addEventListener("click", function(e){
+        handleOperator(e.target.textContent)
+        previousScreen.textContent = previousValue + " " + operator;
+        currentScreen.textContent = currentValue;
+    }))
+
+    clear.addEventListener("click", function() {
+        previousValue = '';
+        currentValue = '';
+        operator = '';
+        previousScreen.textContent = currentValue;
+        currentScreen.textContent = currentValue;
+    })
+
+    equal.addEventListener("click", function(){
+        calculate()
+    })
 })
 
 function handleNumber(num) {
-    console.log(num)
+    if(currentValue.length <= 10) {
+        currentValue += num;
+    }
+    
 
 }
+
+function handleOperator(op) {
+    operator = op;
+    previousValue = currentValue;
+    currentValue = '';
+}
+
+function calculate() {
+    previousValue = Number(previousValue);
+    currentValue = Number(currentValue);
+
+    if(operator === "+") {
+        previousValue += currentValue;
+    } else if(operator === "-") {
+        previousValue -= currentValue;
+    } else if(operator === "x") {
+        previousValue *= currentValue;
+    } else {
+        previousValue /= currentValue;
+    }
+
+    console.log(previousValue);
+}
+
